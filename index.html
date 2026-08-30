@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>金谷丰 · 区块链溯源查询</title>
+<meta name="description" content="金谷丰一物一码区块链溯源查询，种植、加工、仓储、物流全链路数据上链存证。">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap">
+<style>
+/* ===== 设计变量 ===== */
+:root{
+  --bg:#F4EEE1;
+  --paper:#FFFDF7;
+  --ink:#2B241A;
+  --ink-soft:#6E6151;
+  --gold:#C8912E;
+  --gold-deep:#A8731D;
+  --gold-light:#EBCB8F;
+  --deep:#1E3A2E;
+  --deep-2:#152C21;
+  --line:#E6DBC4;
+  --ok:#3E8E5A;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:var(--sans);
+  background:#E9E0CC;
+  color:var(--ink);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.page{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+}
+@media(min-width:520px){
+  .page{box-shadow:0 0 70px rgba(60,40,8,.30);margin:24px auto;border-radius:20px;overflow:hidden;}
+}
+::selection{background:var(--gold);color:#fff;}
+
+/* ===== Hero 头部 ===== */
+.hero{position:relative;min-height:420px;display:flex;align-items:flex-end;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 40%;transform:scale(1.06);}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,28,20,.28) 0%,rgba(24,30,22,.52) 55%,rgba(18,26,20,.92) 100%);}
+.hero-inner{position:relative;z-index:2;padding:26px 22px 34px;color:#F7EEDB;width:100%;}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:26px;}
+.brand-mark{
+  font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.2em;
+  border:1px solid rgba(235,203,143,.75);padding:6px 14px;border-radius:999px;color:var(--gold-light);
+  background:rgba(20,30,22,.35);backdrop-filter:blur(4px);
+}
+.brand-sub{font-size:12px;letter-spacing:.28em;color:rgba(247,238,219,.72);}
+.hero-title{
+  font-family:var(--serif);font-weight:900;font-size:44px;line-height:1.14;letter-spacing:.04em;
+  text-shadow:0 2px 18px rgba(0,0,0,.35);
+}
+.hero-title em{font-style:normal;color:var(--gold-light);}
+.hero-desc{margin-top:14px;font-size:13px;color:rgba(247,238,219,.82);max-width:320px;letter-spacing:.02em;}
+.hero-code{
+  margin-top:22px;display:flex;align-items:center;gap:12px;
+  background:rgba(255,253,247,.10);border:1px solid rgba(235,203,143,.45);
+  border-radius:14px;padding:12px 16px;backdrop-filter:blur(6px);
+}
+.hero-code-label{font-size:11px;letter-spacing:.2em;color:rgba(247,238,219,.75);flex-shrink:0;border-right:1px solid rgba(235,203,143,.35);padding-right:12px;}
+.hero-code-value{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:16px;font-weight:700;color:#FBE7B8;letter-spacing:.04em;word-break:break-all;}
+
+/* ===== 通用区块 ===== */
+.sec{padding:30px 22px 8px;}
+.sec-head{margin-bottom:20px;}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.3em;color:var(--gold-deep);margin-bottom:6px;}
+.sec-head h2{font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:.02em;}
+.sec-head p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+
+/* ===== 一物一码卡片 ===== */
+.code-card{
+  background:linear-gradient(150deg,#1E3A2E,#152C21);
+  border-radius:18px;padding:22px;color:#EAF3EC;position:relative;overflow:hidden;
+  border:1px solid rgba(235,203,143,.30);
+}
+.code-card::before{
+  content:"";position:absolute;right:-46px;top:-46px;width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,145,46,.35),transparent 70%);
+}
+.code-card .cc-label{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.24em;color:#C9DCCF;margin-bottom:14px;}
+.cc-big{
+  font-family:var(--serif);font-size:25px;font-weight:700;color:#FBE7B8;letter-spacing:.05em;line-height:1.4;word-break:break-all;position:relative;z-index:1;
+}
+.cc-tags{display:flex;gap:8px;margin-top:14px;position:relative;z-index:1;}
+.cc-tag{font-size:11px;color:var(--gold-light);border:1px solid rgba(235,203,143,.5);border-radius:999px;padding:3px 10px;}
+.cc-note{margin-top:14px;font-size:12px;color:#C9DCCF;line-height:1.8;border-top:1px dashed rgba(201,220,207,.28);padding-top:12px;position:relative;z-index:1;}
+.cc-note b{color:#FBE7B8;font-weight:600;}
+
+/* ===== 基本信息 ===== */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.info-cell{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 15px;}
+.info-cell.wide{grid-column:1 / -1;}
+.info-cell .ic-label{font-size:11px;color:var(--ink-soft);letter-spacing:.08em;margin-bottom:4px;}
+.info-cell .ic-value{font-size:15px;font-weight:600;color:var(--ink);}
+.info-cell .ic-value.small{font-size:13px;}
+
+/* ===== 溯源链时间线 ===== */
+.chain{margin-top:6px;}
+.node{display:flex;gap:16px;}
+.node-rail{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+.node-dot{
+  width:40px;height:40px;border-radius:50%;background:var(--deep);color:#FBE7B8;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 0 0 5px rgba(30,58,46,.14),0 6px 14px rgba(20,30,22,.18);position:relative;z-index:1;
+}
+.node-dot svg{width:20px;height:20px;}
+.node-line{flex:1;width:2px;background:linear-gradient(180deg,var(--gold),rgba(200,145,46,.15));margin:4px 0;min-height:30px;}
+.node:last-child .node-line{background:transparent;}
+.node-card{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 16px 15px;margin-bottom:18px;}
+.node-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.node-no{font-family:var(--serif);font-weight:700;color:var(--gold-deep);font-size:13px;letter-spacing:.06em;}
+.node-head h3{font-family:var(--serif);font-size:17px;font-weight:700;}
+.badge-onchain{margin-left:auto;font-size:10px;color:#fff;background:var(--ok);border-radius:999px;padding:2px 9px;letter-spacing:.1em;}
+.node-dl{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:13px;}
+.node-dl dt{color:var(--ink-soft);white-space:nowrap;line-height:1.7;}
+.node-dl dt::after{content:"：";}
+.node-dl dd{font-weight:500;line-height:1.7;word-break:break-all;}
+.node-img{border-radius:12px;overflow:hidden;margin-top:12px;}
+.node-img img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;}
+/* 加工工艺流程 */
+.flow{margin-top:12px;}
+.flow-cap{font-size:11px;color:var(--ink-soft);letter-spacing:.1em;margin-bottom:8px;}
+.flow-steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;}
+.flow-step{background:#F6EFDF;border:1px solid var(--gold-light);color:var(--gold-deep);font-size:12px;font-weight:600;border-radius:8px;padding:4px 10px;}
+.flow-arrow{color:var(--gold);font-size:13px;font-weight:700;}
+
+/* ===== 区块链存证证书 ===== */
+.cert{
+  margin-top:26px;background:linear-gradient(160deg,#152C21,#1E3A2E);
+  border-radius:18px;padding:22px;color:#EAF3EC;position:relative;overflow:hidden;
+}
+.cert::before{
+  content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);
+  width:86%;height:6px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  border-radius:0 0 6px 6px;
+}
+.cert-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.cert-head .shield{width:34px;height:34px;border-radius:10px;background:rgba(200,145,46,.18);display:flex;align-items:center;justify-content:center;color:var(--gold-light);}
+.cert-head .shield svg{width:20px;height:20px;}
+.cert-title{font-family:var(--serif);font-size:17px;font-weight:700;letter-spacing:.04em;}
+.cert-sub{font-size:11px;color:#A9C4B4;letter-spacing:.12em;margin-top:2px;}
+.cert-hash-label{font-size:11px;letter-spacing:.2em;color:#A9C4B4;margin-bottom:8px;}
+.cert-hash{
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.9;
+  color:#FBE7B8;background:rgba(255,255,255,.05);border:1px solid rgba(235,203,143,.28);
+  border-radius:10px;padding:12px 14px;word-break:break-all;letter-spacing:.02em;
+}
+.cert-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:11.5px;color:#C9DCCF;}
+.cert-meta b{color:#FBE7B8;font-weight:600;}
+.cert-ok{display:flex;align-items:center;gap:8px;margin-top:16px;background:rgba(62,142,90,.16);border:1px solid rgba(113,200,150,.4);border-radius:10px;padding:9px 12px;font-size:12px;color:#BFE6CD;}
+.cert-ok svg{width:16px;height:16px;color:#71C896;flex-shrink:0;}
+
+/* ===== 页脚 ===== */
+.foot{margin-top:26px;padding:26px 22px 40px;text-align:center;}
+.foot .f-brand{font-family:var(--serif);font-weight:700;letter-spacing:.3em;font-size:14px;color:var(--ink);}
+.foot .f-line{width:44px;height:2px;background:var(--gold);margin:12px auto;border-radius:2px;}
+.foot p{font-size:11px;color:var(--ink-soft);letter-spacing:.1em;line-height:1.9;}
+.foot .f-hash{font-size:10px;color:#A79A85;margin-top:10px;word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== Hero 头部 ===== -->
+  <header class="hero">
+    <div class="hero-bg" style="background-image:url('https://aka.doubaocdn.com/s/fN00sG9cLh');"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-inner">
+      <div class="brand">
+        <span class="brand-mark">金谷丰</span>
+        <span class="brand-sub">区块链溯源系统</span>
+      </div>
+      <h1 class="hero-title">一物一码<br>全程<em>溯源</em></h1>
+      <p class="hero-desc">种植、加工、质检、流通数据全部上链存证，生成专属哈希值永久留存，不可复制、不可篡改。</p>
+      <div class="hero-code">
+        <span class="hero-code-label">产品唯一编码</span>
+        <span class="hero-code-value">QZHM-20260310-89-001</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 一物一码卡片 ===== -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="eyebrow">ONE PRODUCT · ONE CODE</span>
+      <h2>一物一码</h2>
+      <p>每一份产品对应唯一独立编码，扫码即可核验真伪与全链路档案</p>
+    </div>
+    <div class="code-card">
+      <div class="cc-label">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><path d="M9 6v12M15 6v12"/></svg>
+        溯源档案 · 唯一编码
+      </div>
+      <div class="cc-big">QZHM-20260310-89-001</div>
+      <div class="cc-tags">
+        <span class="cc-tag">不可复制</span>
+        <span class="cc-tag">不可篡改</span>
+        <span class="cc-tag">全程可查</span>
+      </div>
+      <p class="cc-note">本产品全部种植、加工、质检、流通数据已上<b>区块链存证</b>，生成专属哈希值永久留存，任何环节数据变更都将留下可追溯痕迹。</p>
+    </div>
+  </section>
+
+  <!-- ===== 基本信息 ===== -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="eyebrow">BASIC INFO</span>
+      <h2>基本信息</h2>
+      <p>产品身份档案，来自种植基地备案与质检体系</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-cell"><div class="ic-label">品类</div><div class="ic-value">黄谷子</div></div>
+      <div class="info-cell"><div class="ic-label">等级</div><div class="ic-value">特级</div></div>
+      <div class="info-cell wide"><div class="ic-label">种植基地备案号</div><div class="ic-value small">140430-2024-001</div></div>
+      <div class="info-cell"><div class="ic-label">播种时间</div><div class="ic-value small">2025.05.25 – 06.05</div></div>
+      <div class="info-cell"><div class="ic-label">收割时间</div><div class="ic-value small">2025.09.28 – 10.08</div></div>
+      <div class="info-cell wide"><div class="ic-label">晾晒方式</div><div class="ic-value small">自然露天晾晒</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 溯源全链路 ===== -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="eyebrow">TRACEABILITY CHAIN</span>
+      <h2>溯源全链路</h2>
+      <p>种植 → 加工 → 仓储 → 物流，环环上链、步步可查</p>
+    </div>
+
+    <div class="chain">
+
+      <!-- 种植环节 -->
+      <article class="node">
+        <div class="node-rail">
+          <span class="node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span>
+          <span class="node-line"></span>
+        </div>
+        <div class="node-card">
+          <div class="node-head">
+            <span class="node-no">01</span>
+            <h3>种植环节</h3>
+            <span class="badge-onchain">已上链</span>
+          </div>
+          <dl class="node-dl">
+            <dt>品类</dt><dd>黄谷子</dd>
+            <dt>等级</dt><dd>特级</dd>
+            <dt>播种时间</dt><dd>2025年5月25日 – 6月5日</dd>
+            <dt>收割时间</dt><dd>2025年9月28日 – 10月8日</dd>
+            <dt>基地备案号</dt><dd>140430-2024-001</dd>
+            <dt>晾晒方式</dt><dd>自然露天晾晒</dd>
+          </dl>
+          <div class="node-img"><img src="https://aka.doubaocdn.com/s/8IpIKURsdr" alt="黄小米种植基地" loading="lazy"></div>
+        </div>
+      </article>
+
+      <!-- 加工环节 -->
+      <article class="node">
+        <div class="node-rail">
+          <span class="node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 18 0"/><path d="M3 12h3l1.2-2.4 2.3 4.8L11.8 9l2.2 6 1.3-2.6H21"/><path d="M3 17h18"/></svg></span>
+          <span class="node-line"></span>
+        </div>
+        <div class="node-card">
+          <div class="node-head">
+            <span class="node-no">02</span>
+            <h3>加工环节</h3>
+            <span class="badge-onchain">已上链</span>
+          </div>
+          <dl class="node-dl">
+            <dt>加工日期</dt><dd>2026-03-07</dd>
+            <dt>加工批次号</dt><dd>QZHM-20260310-89</dd>
+          </dl>
+          <div class="flow">
+            <div class="flow-cap">加工工艺流程</div>
+            <div class="flow-steps">
+              <span class="flow-step">清理除杂</span><span class="flow-arrow">→</span>
+              <span class="flow-step">砻谷脱壳</span><span class="flow-arrow">→</span>
+              <span class="flow-step">谷糙分离</span><span class="flow-arrow">→</span>
+              <span class="flow-step">分级筛选</span><span class="flow-arrow">→</span>
+              <span class="flow-step">成品检验</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 仓储环节 -->
+      <article class="node">
+        <div class="node-rail">
+          <span class="node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M3 21h18"/><path d="M12 8v13"/><path d="M7 12h2M15 12h2M7 16h2M15 16h2"/></svg></span>
+          <span class="node-line"></span>
+        </div>
+        <div class="node-card">
+          <div class="node-head">
+            <span class="node-no">03</span>
+            <h3>仓储环节</h3>
+            <span class="badge-onchain">已上链</span>
+          </div>
+          <dl class="node-dl">
+            <dt>仓储时间</dt><dd>2026-03-09 ~ 2026-03-11</dd>
+            <dt>仓储地点</dt><dd>S县恒温成品库</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- 物流环节 -->
+      <article class="node">
+        <div class="node-rail">
+          <span class="node-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 8h14v10H1z"/><path d="M15 11h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>
+          <span class="node-line"></span>
+        </div>
+        <div class="node-card">
+          <div class="node-head">
+            <span class="node-no">04</span>
+            <h3>物流环节</h3>
+            <span class="badge-onchain">已上链</span>
+          </div>
+          <dl class="node-dl">
+            <dt>承运商</dt><dd>顺丰冷链物流</dd>
+            <dt>物流状态</dt><dd>已签收（签收人：张先生）</dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== 区块链存证证书 ===== -->
+  <section class="sec">
+    <div class="cert">
+      <div class="cert-head">
+        <span class="shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <div>
+          <div class="cert-title">区块链存证证书</div>
+          <div class="cert-sub">BLOCKCHAIN CERTIFICATE · 永久留存</div>
+        </div>
+      </div>
+      <div class="cert-hash-label">本产品专属哈希值</div>
+      <div class="cert-hash">E269691F6A875131CE2BE8CFCF1C9A4E804ADB041552E2E1442AF702FDEF632F</div>
+      <div class="cert-meta">
+        <span>存证类型：<b>产品溯源</b></span>
+        <span>存证网络：<b>区块链溯源联盟链</b></span>
+        <span>存证状态：<b>有效</b></span>
+      </div>
+      <div class="cert-ok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+        该产品溯源数据已通过区块链存证校验，内容真实、不可篡改
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="foot">
+    <div class="f-brand">金谷丰 · 竞货出山</div>
+    <div class="f-line"></div>
+    <p>区块链农产品溯源系统<br>从田间到餐桌，全程看得见</p>
+    <div class="f-hash">SHA256 · E269691F6A875131CE2BE8CFCF1C9A4E804ADB041552E2E1442AF702FDEF632F</div>
+  </footer>
+
+</div>
+</body>
+</html>
